@@ -68,7 +68,6 @@ button:hover {
   color: #c1d72e;
 }
 
-
 .question{
   font-size: 24px;
   margin-bottom: 10px;
@@ -100,4 +99,92 @@ button:hover {
   position: relative;
   height: 200px;
   margin-top: 40px;
+}
+
+#smiley{
+  width: 80px;
+  height: 70px;
+  justify-content:center
+}
+
+.ruler_container{
+  position : relative;
+  resize:horizontal;
+  overflow:auto;
+  width:100%;
+  min-width:100px;
+  margin: auto;
+  padding:10%
+}
+.ruler{
+  margin:0px 0px;
+  height:40px;
+  width:100%;
+  justify-content:center
+}
+.ruler-cell{
+  position:relative;
+  height:100%;
+  width:100%;
+  border-left:5px solid black;
+  border-right:5px solid black;
+  background-repeat:no-repeat;
+  background-size:
+    100% 1px,
+    2px 8px,
+    2px 8px,
+    2px 8px,
+    2px 8px,
+    2px 8px;
+  background-position:
+    0% center,
+    16.6% center,
+    33.26% center,
+    49.8% center,
+    66.4% center,
+    83.06% center;
+  background-image:
+    linear-gradient(black, black),
+    linear-gradient(gray, gray),
+    linear-gradient(gray, gray),
+    linear-gradient(gray, gray),
+    linear-gradient(gray, gray),
+    linear-gradient(gray, gray);
+}
+.ruler-cell span{
+  position:absolute;
+  top:-20px;
+  font-size:12px;
+  text-align:center;
+}
+.minus3 {
+   position:relative;
+   left: 0%
+}
+.minus2 {
+   position:relative;
+   left: 16.6%
+}
+.minus1 {
+   position:relative;
+   left: 33.26%
+}
+.zero {
+  position:relative;
+  left: 49.8%
+}
+.plus1{
+  position:relative;
+    left: 66.4%
+}
+.plus2{
+  position:relative;
+  left: 83.06%
+}
+.plus3 {
+  position:relative;
+  left: 99.8%
+}
+.ruler-cell:first-child .zero{
+  display:block;
 }

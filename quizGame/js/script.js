@@ -2,23 +2,33 @@ var maxScore = 3;
 var minScore = -3;
 var questionDiv = document.getElementById("question");
 var choicesDiv = document.getElementById("choices");
+var Ruler = document.getElementById("ruler_id");
+var Ruler_cell = document.getElementById("ruler_cell_id");
 
 const startButton = document.getElementById("start");
 startButton.addEventListener("click", start);
 const submitButton = document.getElementById("submit");
 submitButton.style.display = "none";
 submitButton.addEventListener("click", checkAnswer);
+const happyImage1 = document.getElementById("smiley");
+happyImage1.style.display = "none";
+Ruler.style.display = "none";
 
 var questions = window.questions;
 var questionIndex;
 
 function start() {
-  // update buttons
+  // update buttons and images
   document.getElementById("start").textContent = "New game";
   startButton.style.display = "none";
   submitButton.style.display = "inline-block";
-
+  happyImage1.style.display = "";
+  Ruler.style.display = "";
   score = 0;
+  step_size= happyImage1.parentElement.clientWidth * 0.332;
+  left = score * step_size;
+  happyImage1.style.marginLeft = left + "px" ;
+
   shuffle(questions);
   questionIndex = 0;
 
@@ -61,14 +71,14 @@ function checkAnswer() {
   if (userAnswer === correctChoice) {
     swal("Correct!", `${currentQuestion.explanation}`, "success");
     score ++;
+    movePlayerForward();
   } else {
     swal("Incorrect", `${currentQuestion.explanation}`, "warning");
     score --;
+    movePlayerBackward();
   }
   console.log(`Score is now ${score}`);
   
-  // TODO: add animation and display for score
-
   if (score == maxScore || score == minScore) { // terminate game upon reaching a certain score
     endGame();
     return;
@@ -77,6 +87,23 @@ function checkAnswer() {
   questionIndex = (questionIndex + 1) % questions.length;
   displayQuestion();
 }
+//animation:move the player 
+// var left = 0;
+function movePlayerForward(){
+  step_size= happyImage1.parentElement.clientWidth * 0.332;
+  left = score * step_size;
+  console.log(step_size);
+  happyImage1.style.marginLeft = left + "px" ;
+  console.log(happyImage1.style.marginLeft);
+}
+function movePlayerBackward(){
+  step_size= happyImage1.parentElement.clientWidth * 0.322;
+  left = score * step_size;
+  console.log(window.screen.height);
+  happyImage1.style.marginLeft = left + "px" ;
+  console.log(happyImage1.style.marginLeft);
+}
+
 
 function endGame() {
   if (score == maxScore) {

@@ -17,6 +17,12 @@ Ruler.style.display = "none";
 var questions = window.questions;
 var questionIndex;
 
+var yaySound = new Audio();
+yaySound.src = "sound/yay.mp3";
+
+var noSound = new Audio();
+noSound.src = "sound/no.mp3";
+
 function start() {
   // update buttons and images
   document.getElementById("start").textContent = "New game";
@@ -90,6 +96,7 @@ function checkAnswer() {
 //animation:move the player 
 // var left = 0;
 function movePlayerForward(){
+  yaySound.play();
   step_size= happyImage1.parentElement.clientWidth * 0.332;
   left = score * step_size;
   console.log(step_size);
@@ -97,6 +104,7 @@ function movePlayerForward(){
   console.log(happyImage1.style.marginLeft);
 }
 function movePlayerBackward(){
+  noSound.play();
   step_size= happyImage1.parentElement.clientWidth * 0.322;
   left = score * step_size;
   console.log(window.screen.height);

@@ -1,18 +1,18 @@
-var maxScore = 3;
-var minScore = -3;
+var maxScore = 4;
+var minScore = 5;
 var questionDiv = document.getElementById("question");
 var choicesDiv = document.getElementById("choices");
-var Ruler = document.getElementById("ruler_id");
-var Ruler_cell = document.getElementById("ruler_cell_id");
+var anim_container= document.getElementById("road_id");
+var battery_container= document.getElementById("battery_id");
 
 const startButton = document.getElementById("start");
 startButton.addEventListener("click", start);
 const submitButton = document.getElementById("submit");
 submitButton.style.display = "none";
+anim_container.style.display="none";
+battery_container.style.display="none";
 submitButton.addEventListener("click", checkAnswer);
-const happyImage1 = document.getElementById("smiley");
-happyImage1.style.display = "none";
-Ruler.style.display = "none";
+
 
 var questions = window.questions;
 var questionIndex;
@@ -23,18 +23,27 @@ yaySound.src = "sound/yay.mp3";
 var noSound = new Audio();
 noSound.src = "sound/no.mp3";
 
+var winSound = new Audio();
+winSound.src = "sound/Win.wav";
+
+var GameoverSound = new Audio();
+GameoverSound.src = "sound/Gameover.wav";
+
+
+
 function start() {
   // update buttons and images
-  document.getElementById("start").textContent = "New game";
+  document.getElementById("start").textContent = "New Game";
   startButton.style.display = "none";
   submitButton.style.display = "inline-block";
-  happyImage1.style.display = "";
-  Ruler.style.display = "";
+  questionDiv.style.display = "";
+  choicesDiv.style.display = "";
+  anim_container.style.display="";
+  battery_container.style.display="";
   score = 0;
-  step_size= happyImage1.parentElement.clientWidth * 0.332;
-  left = score * step_size;
-  happyImage1.style.marginLeft = left + "px" ;
-
+  n_score=0;
+  anim_container.src = "img/score0.jpeg";
+  battery_container.src = "img/battery0.jpeg";
   shuffle(questions);
   questionIndex = 0;
 
@@ -60,7 +69,7 @@ function displayQuestion() {
       </label>`
     );
   }
-  
+
   questionDiv.textContent = `${currentQuestion.question}`;
   choicesDiv.innerHTML = `${choices.join("")}`;
 }
@@ -79,13 +88,23 @@ function checkAnswer() {
     score ++;
     movePlayerForward();
   } else {
+    noSound.play();
     swal("Incorrect", `${currentQuestion.explanation}`, "warning");
-    score --;
+    n_score++;
     movePlayerBackward();
   }
   console.log(`Score is now ${score}`);
-  
-  if (score == maxScore || score == minScore) { // terminate game upon reaching a certain score
+
+  if (score == maxScore) {
+    winSound.play(); // terminate game upon reaching a certain score
+    swal("Congratulations! \n you won! \n Try a new game again");
+    endGame();
+    return;
+  }
+
+  if (n_score == minScore) {
+    GameoverSound.play();
+    swal("Game Over! \n Try a new game");
     endGame();
     return;
   }
@@ -93,29 +112,43 @@ function checkAnswer() {
   questionIndex = (questionIndex + 1) % questions.length;
   displayQuestion();
 }
-//animation:move the player 
-// var left = 0;
+//animation:move the player
 function movePlayerForward(){
   yaySound.play();
-  step_size= happyImage1.parentElement.clientWidth * 0.332;
-  left = score * step_size;
-  console.log(step_size);
-  happyImage1.style.marginLeft = left + "px" ;
-  console.log(happyImage1.style.marginLeft);
+  if (score == 1){
+    anim_container.src = "img/score1.jpeg"
+  }
+  else if( score==2){
+    anim_container.src = "img/score2.jpeg"
+  }
+  else if( score==3){
+      anim_container.src = "img/score3.jpeg"
+  }
+  else if( score==4){
+      anim_container.src = "img/score4.jpeg"
+  }
+
 }
 function movePlayerBackward(){
-  noSound.play();
-  step_size= happyImage1.parentElement.clientWidth * 0.322;
-  left = score * step_size;
-  console.log(window.screen.height);
-  happyImage1.style.marginLeft = left + "px" ;
-  console.log(happyImage1.style.marginLeft);
+  if (n_score == 1){
+        battery_container.src = "img/battery1.jpeg"
+    }
+    else if( n_score==2){
+      battery_container.src = "img/battery2.jpeg"
+    }
+    else if( n_score==3){
+        battery_container.src = "img/battery3.jpeg"
+    }
+    else if( n_score==4){
+        battery_container.src = "img/battery4.jpeg"
+    }
 }
 
 
 function endGame() {
   if (score == maxScore) {
     console.log("Game won!");
+
     // TODO: add win event/animation
   } else {
     console.log("Game lost.");
@@ -123,8 +156,15 @@ function endGame() {
   }
 
   // update buttons
-  startButton.style.display = "inline-block";
+  document.getElementById("start").textContent = "New Game";
+  startButton.style.display = "";
   submitButton.style.display = "none";
+  anim_container.style.display="none";
+  battery_container.style.display="none";
+  score = 0;
+  n_score=0;
+  questionDiv.style.display = "none";
+  choicesDiv.style.display = "none";
 }
 
 // helper to randomly permute an array

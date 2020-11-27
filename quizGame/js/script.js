@@ -18,16 +18,16 @@ var questions = window.questions;
 var questionIndex;
 
 var yaySound = new Audio();
-yaySound.src = "sound/yay.mp3";
+yaySound.src = "sound/correct_sound.mp3";
 
 var noSound = new Audio();
-noSound.src = "sound/no.mp3";
+noSound.src = "sound/incorrect_sound.mp3";
 
 var winSound = new Audio();
-winSound.src = "sound/Win.wav";
+winSound.src = "sound/Win.mp3";
 
 var GameoverSound = new Audio();
-GameoverSound.src = "sound/Gameover.wav";
+GameoverSound.src = "sound/Gameover.mp3";
 
 
 
@@ -85,12 +85,15 @@ function checkAnswer() {
 
   if (userAnswer === correctChoice) {
     swal("Correct!", `${currentQuestion.explanation}`, "success");
-    score ++;
+    score++;
+	if(score != maxScore)
+	  yaySound.play();
     movePlayerForward();
   } else {
-    noSound.play();
     swal("Incorrect", `${currentQuestion.explanation}`, "warning");
     n_score++;
+	if(n_score != minScore)
+	  noSound.play();
     movePlayerBackward();
   }
   console.log(`Score is now ${score}`);
@@ -114,7 +117,6 @@ function checkAnswer() {
 }
 //animation:move the player
 function movePlayerForward(){
-  yaySound.play();
   if (score == 1){
     anim_container.src = "img/score1.jpeg"
   }

@@ -2,7 +2,8 @@
 
 body {
   background-image: url("../img/back.jpg");
-  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
   color: #fff;
   height: 100%;
@@ -143,11 +144,10 @@ button:hover {
 }
 .road{
     max-width: 100%;
-    width: auto\9;
+    width: 80%;
     height: auto;
 }
 .battery{
-    max-width: 100%;
-    width: auto\9;
+    width: 6%;
     height: auto;
 }

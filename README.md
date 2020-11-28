@@ -1,16 +1,25 @@
 # CellBiologyLearningGames
 # CSCE 606 - Software engineering (Fall 2020)
 ## Course project by Team - SEprojectgroup ##
-Team members:
-* Darakshan Anwar 
-* Venkata Sameer Kumar Betana Bhotla 
-* John Griffin 
-* Rohit Jain
-* Nimoshika Jayaraman
-* Tanu Shree
+### Team Memebers
+Our team consists of the following collaborators
+
+***Product Owner***
+> Venkata Sameer Kumar Betana Bhotla
+
+***Scrum Master***
+> John Griffin
+
+***Rest of the team***
+> Darakshan Anwar\
+> Rohit Jain\
+> Nimoshika Jayaraman\
+> Tanu Shree
+
 ## Project topic - Cell biology learning games ##
 ### Instructions on Game data and Deployment:
 Coming Soon!!!
+
 <!---
 1. Connect to FTP Server using the credentials 
 2. Navigate to /futuredogter.com/stepstone/workArea/NIH-SEPA-1/activityLib/practice_c1/apps

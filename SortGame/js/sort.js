@@ -78,7 +78,7 @@ function shuffle(array) {
 }
 
 // Select Catagory
-var setCategorys = function () {
+var setCategories = function () {
   categoryName1.innerHTML = category1;
   categoryName2.innerHTML = category2;
 };
@@ -138,8 +138,7 @@ function answerFunc() {
 	if (correct) {
 	  var success = "Correct!"
 	  swal("", "<div style='font-size :24px;'>" + success + "</div>","success");
-	  reset();
-	  play();
+	  document.getElementById("reset").style.visibility = "visible";
 	}
 	else {
       var wrong = "Wrong!"
@@ -152,7 +151,7 @@ function answerFunc() {
   }
 }
 
-function reset() {
+function resetFunc() {
   var cat1 = document.getElementById("category1");
   var cat2 = document.getElementById("category2");
   while (cat1.firstChild) {
@@ -162,6 +161,8 @@ function reset() {
 	cat2.removeChild(cat2.firstChild);
   }
   document.getElementById("bag").remove();
+  document.getElementById("reset").style.visibility = "hidden";
+  play();
 }
 
 function play() {
@@ -169,13 +170,14 @@ function play() {
   shuffle(categories);
   category1 = categories[0];
   category2 = categories[1];
-  setCategorys();
+  setCategories();
   setWordLists(category1, category2);
 
   boxes();
   setDrag();
   hint.onclick = hintFunc;
   answer.onclick = answerFunc;
+  reset.onclick = resetFunc;
 };
 
 window.onload = function () {

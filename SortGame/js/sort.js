@@ -71,7 +71,7 @@ var setDrag = function() {
 function shuffle(array) {
 	for (let i = array.length - 1; i > 0; i--) {
     let j = Math.floor(Math.random() * (i + 1));
-    const temp = array[i];
+    var temp = array[i];
     array[i] = array[j];
     array[j] = temp;
 	}
@@ -84,17 +84,17 @@ var setCategories = function () {
 };
 
 function setWordLists(cat1, cat2) {
-  const array1 = Object.keys(words[cat1]);
-  const array2 = Object.keys(words[cat2]);
+  var array1 = Object.keys(words[cat1]);
+  var array2 = Object.keys(words[cat2]);
   wordslist = array1.concat(array2);
   shuffle(wordslist);
 };
 
 function hintFunc() {
-  const randWord = wordslist[Math.floor(Math.random() * wordslist.length)];
+  var randWord = wordslist[Math.floor(Math.random() * wordslist.length)];
   var cat;
   var h;
-  const found = false;
+  var found = false;
   for (let i = 0; i < categories.length; i++) {
     cat = categories[i];
     for (x of Object.keys(words[cat])) {
@@ -139,6 +139,12 @@ function answerFunc() {
 	  var success = "Correct!"
 	  swal("", "<div style='font-size :24px;'>" + success + "</div>","success");
 	  document.getElementById("reset").style.visibility = "visible";
+	  document.getElementById("answer").disabled = true;
+	  document.getElementById("hint").disabled = true;
+	  var list_items = document.querySelectorAll(".word");
+	  for (x of list_items) {
+		x.draggable = false;
+	  }
 	}
 	else {
       var wrong = "Wrong!"
@@ -162,6 +168,8 @@ function resetFunc() {
   }
   document.getElementById("bag").remove();
   document.getElementById("reset").style.visibility = "hidden";
+  document.getElementById("answer").disabled = false;
+  document.getElementById("hint").disabled = false;
   play();
 }
 

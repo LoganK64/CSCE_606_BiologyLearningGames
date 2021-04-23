@@ -34,19 +34,21 @@ p {
   height: fit-content;
 }
 
-#category {
-  border: #fff dashed 2px;
-  margin: 15px;
+#category1 {
   height: 300px;
 }
 
-#buttons {
-  border: #fff dashed 2px;
-  margin: 15px;
-  height: 200px;
+#category2 {
+  height: 300px;
 }
 
-#buttons li {
+.words {
+  border: #fff dashed 2px;
+  margin: 15px;
+  min-height: 200px;
+}
+
+.words li {
   float: left;
   margin: 5px 5px 5px 5px;
   list-style: none;
@@ -66,7 +68,7 @@ p {
   transition: all 200ms;
 }
 
-#buttons li:after {
+.words li:after {
   cursor: pointer;
   transition: all 200ms;
   transition-timing-function: cubic-bezier(0.48, 0.72, 0.62, 1.5);
@@ -74,13 +76,13 @@ p {
   position: absolute;
 }
 
-#buttons li:hover {
+.words li:hover {
   background: #c1d72e;
   border: solid 1px #fff;
   color: #fff;
 }
 
-#buttons li:hover:after {
+.words li:hover:after {
   transform: translate(0);
 }
 

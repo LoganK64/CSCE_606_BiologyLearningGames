@@ -1,20 +1,21 @@
 # CellBiologyLearningGames
-# CSCE 606 - Software engineering (Fall 2020)
-## Course project by Team - SEprojectgroup ##
+# CSCE 606 - Software engineering (Fall 2021)
+## Course project by Team - Diamond Hands ##
 ### Team Memebers
 Our team consists of the following collaborators
 
 ***Product Owner***
-> Venkata Sameer Kumar Betana Bhotla
+> Sun Yul Lee
 
 ***Scrum Master***
-> John Griffin
+> Jack Shirley
 
 ***Rest of the team***
-> Darakshan Anwar\
-> Rohit Jain\
-> Nimoshika Jayaraman\
-> Tanu Shree
+> Brady Testa\
+> Logan Keim\
+> Mounika Kunduru\
+> Varsha Venkataramu\
+> Whittney Ford
 
 ## Project topic - Cell biology learning games ##
 ### Instructions on Game data and Deployment:

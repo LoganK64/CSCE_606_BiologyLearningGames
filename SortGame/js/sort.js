@@ -1,14 +1,14 @@
-var words = window.words;
-var categories = window.categories;
+var words = window.words; //word dataset
+var categories = window.categories; //category dataset
 //var wordslist = Object.keys(words);
 
-var wordslist;
+var wordslist; //for bag of words
 var category1;
 var category2;
 var hintText;
 var draggedItem = null;
 
-// create alphabet ul
+// create bag of words ul
 var boxes = function () {
 	myWords = document.getElementById("buttons");
 	wordBoxes = document.createElement("ul");
@@ -25,6 +25,7 @@ var boxes = function () {
 	}
 };
 
+// add drag and drop features on the words
 var setDrag = function() {
   const list_items = document.querySelectorAll(".word");
   const lists = document.querySelectorAll(".words");
@@ -83,9 +84,14 @@ var setCategories = function () {
   categoryName2.innerHTML = category2;
 };
 
+// get bag of words
 function setWordLists(cat1, cat2) {
   var array1 = Object.keys(words[cat1]);
   var array2 = Object.keys(words[cat2]);
+  shuffle(array1);
+  shuffle(array2);
+  array1 = array1.slice(array1.length*0.4);
+  array2 = array2.slice(array2.length*0.4)
   wordslist = array1.concat(array2);
   shuffle(wordslist);
 };

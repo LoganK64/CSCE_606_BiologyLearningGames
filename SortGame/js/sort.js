@@ -7,6 +7,7 @@ var category1;
 var category2;
 var hintText;
 var draggedItem = null;
+var score = 0;
 
 // create bag of words ul
 var boxes = function () {
@@ -151,15 +152,29 @@ function answerFunc() {
 	  for (x of list_items) {
 		x.draggable = false;
 	  }
+	  score= score+1;
+	  var lblScore = document.getElementById('lblScore');
+	  lblScore.innerHTML = "Score: "+ score;
 	}
 	else {
       var wrong = "Wrong!"
 	  swal("", "<div style='font-size :24px;'>" + wrong + "</div>","error");
+	  if (score>0){
+	    score = score -1;
+	  }
+	  else{
+		score =0;
+	  }
+	  var lblScore = document.getElementById('lblScore');
+	  lblScore.innerHTML = "Score: "+ score;
 	}
   }
   else {
 	var warning = "Not all words are sorted!"
 	swal("", "<div style='font-size :24px;'>" + warning + "</div>","warning");
+	
+	var lblScore = document.getElementById('lblScore');
+	lblScore.innerHTML = "Score: "+ score;
   }
 }
 
@@ -177,6 +192,9 @@ function resetFunc() {
   document.getElementById("answer").disabled = false;
   document.getElementById("hint").disabled = false;
   play();
+  
+  var lblScore = document.getElementById('lblScore');
+  lblScore.innerHTML = "Score: "+ score;
 }
 
 function play() {

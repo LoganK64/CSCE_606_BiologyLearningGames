@@ -13,16 +13,16 @@ var score = 0;
 var boxes = function () {
 	myWords = document.getElementById("buttons");
 	wordBoxes = document.createElement("ul");
-	wordBoxes.className += "words";
+	wordBoxes.className = "words";
 	wordBoxes.id = "bag";
+	myWords.appendChild(wordBoxes);
 
 	for (let i = 0; i < wordslist.length; i++) {
-		list = document.createElement("li");
-		list.className += "word";
-		list.draggable = true;
-		list.innerHTML = wordslist[i];
-		myWords.appendChild(wordBoxes);
-		wordBoxes.appendChild(list);
+		word = document.createElement("li");
+		word.className = "word";
+		word.draggable = true;
+		word.innerHTML = wordslist[i];
+		wordBoxes.appendChild(word);
 	}
 };
 

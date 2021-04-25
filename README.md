@@ -1,5 +1,5 @@
 # CellBiologyLearningGames
-# CSCE 606 - Software engineering (Fall 2021)
+# CSCE 606 - Software engineering (Spring 2021)
 ## Course project by Team - Diamond Hands ##
 ### Team Memebers
 Our team consists of the following collaborators

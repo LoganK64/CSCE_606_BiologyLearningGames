@@ -61,32 +61,29 @@ function shuffle(array) {
 var buttons = function () {
 	myButtons = document.getElementById("buttons");
 	letters = document.createElement("ul");
-	tempArray = [];
+	letters.id = "alphabet";
 	for (var i = 0; i < Math.sqrt(fieldSize); i++) {		
 		fieldArray.push([]);
-		//tempArray.length = 0;
 		for(var j = 0; j < Math.sqrt(fieldSize); j++){
-			tempChar = alphabet[Math.floor(Math.random() * 25)];
+			tempChar = alphabet[Math.floor(Math.random() * 26)];
 			let tempLetter = new Letter(tempChar, false, "");
-			//tempArray.push(tempLetter);
+			//if(fieldArray[i][j])
 			fieldArray[i].push(tempLetter);
 
-			
-			letters.id = "alphabet";
 			list = document.createElement("li");
-			list.id = "letter";
+			list.id = "letter" + String(i) + String(j);
 
-			list.innerHTML = tempChar;
+			list.innerHTML = tempLetter.letter;
 			check();
 			myButtons.appendChild(letters);
 			letters.appendChild(list);
 		}
-		//fieldArray.push(tempArray);
-		
 	}
-	console.log(fieldArray);
-	//console.log("fieldArray[5]");
-	//console.log(fieldArray[0][0].letter);
+	//TODO ***********************************
+	console.log(words[1]);
+	insertDiagonal(words[1]);
+	insertRight(words[2]);
+	insertDown(words[3]);
 };
 
 //for(var x = 0; x < 11; x++){
@@ -95,12 +92,100 @@ var buttons = function () {
 
 
 //insert facing right
-
+function insertRight(word){
+	var taken = true;
+	var row = 0;
+	var col = 0;
+	iter = 0;
+	//checking to see if it can place the word in random spots
+	while(taken == true && iter < 100){
+		row = Math.floor(Math.floor(Math.random() * fieldSize)/Math.sqrt(fieldSize));
+		col = Math.floor(Math.random() * Math.sqrt(fieldSize));
+		if(!(word.length > Math.sqrt(fieldSize)-col)){
+			for(var z = 0; z < word.length && z < Math.sqrt(fieldSize)-col; z++){
+				taken = false;
+				if(fieldArray[row][col+z].inWord){
+					taken = true;
+					break;
+				}
+			}
+			if(!taken){
+				for(z = 0; z < word.length; z++){
+					fieldArray[row][col+z].letter = word.substring(z, z+1);
+					fieldArray[row][col+z].inWord = true;
+					fieldArray[row][col+z].word = word;
+					tempvar = document.getElementById("letter" + String(row) + String(col+z));
+					tempvar.innerHTML = word.substring(z, z+1);
+				}
+			}
+		}
+		iter++;
+	}
+}
 
 //insert facing down
-
+function insertDown(word){
+	var taken = true;
+	var row = 0;
+	var col = 0;
+	iter = 0;
+	//checking to see if it can place the word in random spots
+	while(taken == true && iter < 100){
+		row = Math.floor(Math.floor(Math.random() * fieldSize)/Math.sqrt(fieldSize));
+		col = Math.floor(Math.random() * Math.sqrt(fieldSize));
+		if(!(word.length > Math.sqrt(fieldSize)-row)){
+			for(var z = 0; z < word.length && z < Math.sqrt(fieldSize)-row; z++){
+				taken = false;
+				if(fieldArray[row+z][col].inWord){
+					taken = true;
+					break;
+				}
+			}
+			if(!taken){
+				for(z = 0; z < word.length; z++){
+					fieldArray[row+z][col].letter = word.substring(z, z+1);
+					fieldArray[row+z][col].inWord = true;
+					fieldArray[row+z][col].word = word;
+					tempvar = document.getElementById("letter" + String(row+z) + String(col));
+					tempvar.innerHTML = word.substring(z, z+1);
+				}
+			}
+		}
+		iter++;
+	}
+}
 
 //insert facing diagonal (top left to bottom right)
+function insertDiagonal(word){
+	var taken = true;
+	var row = 0;
+	var col = 0;
+	iter = 0;
+	//checking to see if it can place the word in random spots
+	while(taken == true && iter < 100){
+		row = Math.floor(Math.floor(Math.random() * fieldSize)/Math.sqrt(fieldSize));
+		col = Math.floor(Math.random() * Math.sqrt(fieldSize));
+		if(!( (word.length > Math.sqrt(fieldSize)-col) || (word.length > Math.sqrt(fieldSize)-row))){
+			for(var z = 0; z < word.length && z < Math.sqrt(fieldSize)-col && z < Math.sqrt(fieldSize)-col; z++){
+				taken = false;
+				if(fieldArray[row+z][col+z].inWord){
+					taken = true;
+					break;
+				}
+			}
+			if(!taken){
+				for(z = 0; z < word.length; z++){
+					fieldArray[row+z][col+z].letter = word.substring(z, z+1);
+					fieldArray[row+z][col+z].inWord = true;
+					fieldArray[row+z][col+z].word = word;
+					tempvar = document.getElementById("letter" + String(row+z) + String(col+z));
+					tempvar.innerHTML = word.substring(z, z+1);
+				}
+			}
+		}
+		iter++;
+	}
+}
 
 // Select Catagory
 var selectCat = function () {

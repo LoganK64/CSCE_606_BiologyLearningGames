@@ -5,7 +5,7 @@
 //Every word belongs into one of 3 categories: 'Plant', 'Animal or Virus' or 'Unicellular'
 //Place the corresponding image of each word into the 'Assets' folder present inside the 'guessUp' folder
  
-
+/*
 window.easywords = {
 "mitochondria" : [ "Plant", "Power house of the cell", "mitochondria.jpg"],
 "nucleus" : ["Plant", "Brain of a cell", "nucleus.jpg"],
@@ -15,6 +15,16 @@ window.easywords = {
 "amoeba" : ["Unicellular", "Unicellular organism which has the ability to alter its shape", "amoeba.jpg"],
 "paramecium" : ["Unicellular", "Genus of unicellular ciliates, commonly studied as a representative of the ciliate group", "paramecium.jpg" ]
 }
+*/
+window.easywords = [
+    "mitochondria",
+    "nucleus",
+    "plantcell",
+    "animalcell",
+    "virus",
+    "amoeba",
+    "paramecium"
+    ]
 window.mediumwords = {
 "plasma-membrane" : [ "Unicellular", "membrane of lipids and proteins that forms the external boundary of a cell and serves as a gate keeper letting only select things in and out", "mitochondria.jpg"],
 "cell-wall" : ["Plant", "tough, rigid outer covering that protects and provides shape to the cell", "nucleus.jpg"],

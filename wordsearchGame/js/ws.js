@@ -1,3 +1,5 @@
+
+
 var words = window.easywords;
 var wordslist = Object.keys(words);
 var alphabet = [
@@ -37,6 +39,7 @@ var lives; // Lives
 var counter; // Count correct geusses
 var space; // Number of spaces in word '-'
 var hintText;
+var difficulty = "Medium";
 
 //new code
 const fieldSize = 121;
@@ -223,6 +226,7 @@ var selectCat = function () {
 
 // Create geusses ul
 result = function () {
+/*
 	wordHolder = document.getElementById("hold");
 	correct = document.createElement("ul");
 
@@ -241,12 +245,19 @@ result = function () {
 		wordHolder.appendChild(correct);
 		correct.appendChild(guess);
 	}
+	*/
 };
 
 setShowLives = function (str) {
 	console.log(str);
 	var showLives = document.getElementById("mylives");
 	showLives.innerHTML = str;
+	
+	dif = document.createElement("p");
+	dif.id = "difficulty frame";
+	dif.innerHTML = difficulty;
+	showLives.appendChild(dif);
+	
 };
 
 setShowWordBank = function()
@@ -257,17 +268,26 @@ setShowWordBank = function()
 
 	wblist = document.createElement("ul");
 
-	
-	for (var i = 0; i < insertedWords.length; i++) {
-			hold = document.createElement("li");
-			hold.id = "Word " + String(i);
-			hold.innerHTML = insertedWords[i];
-			
-			wblist.appendChild(hold);
-			
-			
+	if(difficulty != "Hard")
+	{
+		for (var i = 0; i < insertedWords.length; i++) {
+				hold = document.createElement("li");
+				hold.id = "Word " + String(i);
+				hold.innerHTML = insertedWords[i];
+				
+				wblist.appendChild(hold);
+				
+				
+		}
 	}
-	
+	else
+	{
+			hold = document.createElement("li");
+			hold.id = "Sorry";
+			hold.innerHTML = "NO BANK AVAILABLE ON HARD";
+				
+			wblist.appendChild(hold);
+	}
 	
 	wordbank.appendChild(wblist);
 	
@@ -277,7 +297,8 @@ setShowWordBank = function()
 
 // Show lives
 comments = function () {
-	setShowLives("You have " + lives + " lives");
+	setShowLives("You have " + lives + " lives ");
+	/*
 	if (lives < 1) {
 		setShowLives("Game Over");
 		for (var i = letters.children.length - 1; i >= 0; i--) {
@@ -295,6 +316,7 @@ comments = function () {
 		}
 		hint.onclick = null;
 	}
+	*/
 };
 
 // OnClick Function
@@ -383,43 +405,55 @@ window.onload = function () {
 			showConfirmButton: false
 		}) //swal
 		document.getElementById("buttonEasy").onclick = function () {
-			words = window.easywords;
-			wordslist = Object.keys(words);
-			correct.parentNode.removeChild(correct);
-			letters.parentNode.removeChild(letters);
-	
-			play();
-			//swal.clickConfirm();
-		} //buttonEasy
-		document.getElementById("buttonMedium").onclick = function () {
-			words = window.mediumwords;
-			wordslist = Object.keys(words);
-			correct.parentNode.removeChild(correct);
-			letters.parentNode.removeChild(letters);
-	
-			play();
-			//swal.clickConfirm();
-		} //buttonMedium
-		document.getElementById("buttonHard").onclick = function () {
-			words = window.hardwords;
-			wordslist = Object.keys(words);
-			correct.parentNode.removeChild(correct);
+
+		
+		insertedWords=[];
+			difficulty = "Easy";
+			refreshLetter();
+			//console.log(words);
+			
 			letters.parentNode.removeChild(letters);
 		
 			play();
-			//swal.clickConfirm();
+			setShowWordBank();
+			swal.clickConfirm();
+		} //buttonEasy
+		document.getElementById("buttonMedium").onclick = function () {
+
+			insertedWords=[];
+		
+			refreshLetter();
+			difficulty = "Medium";
+			//console.log(words);
+			
+			letters.parentNode.removeChild(letters);
+		
+			play();
+			setShowWordBank();
+			swal.clickConfirm();
+		} //buttonMedium
+		document.getElementById("buttonHard").onclick = function () {
+
+			insertedWords=[];
+		
+			refreshLetter();
+			difficulty = "Hard";
+			//console.log(words);
+			
+			letters.parentNode.removeChild(letters);
+		
+			play();
+			setShowWordBank();
+			swal.clickConfirm();
 		}
 	}
 
 	// Reset
 	document.getElementById("reset").onclick = function () {
 		insertedWords=[];
-		
 		refreshLetter();
-		console.log(insertedWords.length);
-		correct.parentNode.removeChild(correct);
-		letters.parentNode.removeChild(letters);
 		
+		letters.parentNode.removeChild(letters);
 		play();
 		setShowWordBank();
 	};

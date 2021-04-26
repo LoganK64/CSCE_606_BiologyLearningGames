@@ -92,8 +92,12 @@ function setWordLists(cat1, cat2) {
   var array2 = Object.keys(words[cat2]);
   shuffle(array1);
   shuffle(array2);
-  array1 = array1.slice(array1.length*0.4);
-  array2 = array2.slice(array2.length*0.4)
+  if (array1.length > 5) {
+	array1 = array1.slice(array1.length*0.4);
+  }
+  if (array2.length > 5) {
+	array2 = array2.slice(array2.length*0.4);
+  }
   wordslist = array1.concat(array2);
   shuffle(wordslist);
 };

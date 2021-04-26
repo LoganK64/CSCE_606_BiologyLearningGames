@@ -1,6 +1,6 @@
 // "category" : {"word" : "Hint"}
 
-//Every word belongs into one of 3 categories: 'Plant', 'Animal or Virus' or 'Unicellular'
+//Every word belongs into one of 3 categories: "Ecosystem organization", "Enerry flow", "Biome"
  
 window.categories = ["Ecosystem organization", "Enerry flow", "Biome"]
 
@@ -28,7 +28,7 @@ window.words = {
 	"food-web" : "A series of overlapping food chains that more completely models the flow of energy through an ecosystem.", 
 	"producer" : "Organisms that make their own food.", 
 	"consumer" :  "An organism that cannot produce its own food and must eat other organisms to obtain energy.", 
-	"decomposer" : "An organism that breaks down organic (once living) matter.", 
+	"decomposer" : "An organism that breaks down organic (once living) matter."
    
 },
 "Biome" : {
@@ -40,5 +40,7 @@ window.words = {
 	"grassland" :  "Biome where the vegetation is dominated by grasses.", 
 	"aquatic" :  "Biome habitats that are dominated by water.",
 	"freshwater" : "These ecosystems include flowing water such as rivers and creeks and standing water such as lakes, ponds, and wetlands.", 
-	"marine" :  "These ecosystems are areas of water containing a high salt content.", 
+	"marine" :  "These ecosystems are areas of water containing a high salt content."
+
+}
 }

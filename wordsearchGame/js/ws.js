@@ -39,14 +39,15 @@ var space; // Number of spaces in word '-'
 var hintText;
 
 //new code
-var fieldSize = 121;
+const fieldSize = 121;
 var fieldArray = [];
+var insertedWords = [];
 
 class Letter {
 	constructor(letter, inWord, word) {
-		this.letter = letter;
-		this.inWord = inWord;
-		this.word = word;
+		this.letter = letter;	//char
+		this.inWord = inWord;	//bool
+		this.word = word;		//string
 	}
   }
 
@@ -67,23 +68,34 @@ var buttons = function () {
 		for(var j = 0; j < Math.sqrt(fieldSize); j++){
 			tempChar = alphabet[Math.floor(Math.random() * 26)];
 			let tempLetter = new Letter(tempChar, false, "");
-			//if(fieldArray[i][j])
 			fieldArray[i].push(tempLetter);
-
+			
+			//insert into the html
 			list = document.createElement("li");
 			list.id = "letter" + String(i) + String(j);
-
 			list.innerHTML = tempLetter.letter;
 			check();
 			myButtons.appendChild(letters);
 			letters.appendChild(list);
 		}
 	}
-	//TODO ***********************************
-	console.log(words[1]);
-	insertDiagonal(words[1]);
-	insertRight(words[2]);
-	insertDown(words[3]);
+	//word insertion
+	for(i = 0; i < words.length; i++){
+		switch(Math.floor(Math.random() * 3)){
+			case 0:
+				insertRight(words[i]);
+				break;
+			case 1:
+				insertDown(words[i]);
+				break;
+			case 2:
+				insertDiagonal(words[i]);
+				break;
+			default:
+				insertRight(words[i]);
+
+		}
+	}
 };
 
 //for(var x = 0; x < 11; x++){
@@ -117,6 +129,7 @@ function insertRight(word){
 					tempvar = document.getElementById("letter" + String(row) + String(col+z));
 					tempvar.innerHTML = word.substring(z, z+1);
 				}
+				insertedWords.push(word);
 			}
 		}
 		iter++;
@@ -149,6 +162,7 @@ function insertDown(word){
 					tempvar = document.getElementById("letter" + String(row+z) + String(col));
 					tempvar.innerHTML = word.substring(z, z+1);
 				}
+				insertedWords.push(word);
 			}
 		}
 		iter++;
@@ -181,6 +195,7 @@ function insertDiagonal(word){
 					tempvar = document.getElementById("letter" + String(row+z) + String(col+z));
 					tempvar.innerHTML = word.substring(z, z+1);
 				}
+				insertedWords.push(word);
 			}
 		}
 		iter++;
@@ -189,7 +204,7 @@ function insertDiagonal(word){
 
 // Select Catagory
 var selectCat = function () {
-	catagoryName.innerHTML = "Category : " + chosenCategory;
+	catagoryName.innerHTML = "Words Remaining : " + insertedWords.length;
 };
 
 // Create geusses ul
@@ -219,6 +234,8 @@ setShowLives = function (str) {
 	showLives.innerHTML = str;
 };
 
+
+
 // Show lives
 comments = function () {
 	setShowLives("You have " + lives + " lives");
@@ -240,87 +257,7 @@ comments = function () {
 		hint.onclick = null;
 	}
 };
-/*
-// Animate man
-var animate = function () {
-	var drawMe = lives;
-	drawArray[drawMe]();
-};
 
-// Hangman
-
-canvas = function () {
-	myStickman = document.getElementById("stickman");
-	context = myStickman.getContext("2d");
-	context.beginPath();
-	context.strokeStyle = "#fff";
-	context.lineWidth = 2;
-};
-
-head = function () {
-	myStickman = document.getElementById("stickman");
-	context = myStickman.getContext("2d");
-	context.beginPath();
-	context.arc(60, 25, 10, 0, Math.PI * 2, true);
-	context.stroke();
-};
-
-draw = function ($pathFromx, $pathFromy, $pathTox, $pathToy) {
-	context.moveTo($pathFromx, $pathFromy);
-	context.lineTo($pathTox, $pathToy);
-	context.stroke();
-};
-
-frame1 = function () {
-	draw(0, 150, 150, 150);
-};
-
-frame2 = function () {
-	draw(10, 0, 10, 600);
-};
-
-frame3 = function () {
-	draw(0, 5, 70, 5);
-};
-
-frame4 = function () {
-	draw(60, 5, 60, 15);
-};
-
-torso = function () {
-	draw(60, 36, 60, 70);
-};
-
-rightArm = function () {
-	draw(60, 46, 100, 50);
-};
-
-leftArm = function () {
-	draw(60, 46, 20, 50);
-};
-
-rightLeg = function () {
-	draw(60, 70, 100, 100);
-};
-
-leftLeg = function () {
-	draw(60, 70, 20, 100);
-};
-
-drawArray = [
-	rightLeg,
-	leftLeg,
-	rightArm,
-	leftArm,
-	torso,
-	head,
-	frame4,
-	frame3,
-	frame2,
-	frame1
-];
-
-*/
 // OnClick Function
 check = function () {
 	list.onclick = function () {
@@ -373,12 +310,6 @@ function setImageSource(str) {
 // Play
 function play() {
 
-	if (count % wordslist.length == 0) {
-		shuffle(wordslist)
-		console.log("shuffled");
-	}
-	count += 1;
-	chosenCategory = words[wordslist[count % wordslist.length]][0];
 	word = wordslist[count % wordslist.length];
 	hintText = words[wordslist[count % wordslist.length]][1];
 	//setImageSource("assets/" + words[wordslist[count % wordslist.length]][2]);
@@ -388,7 +319,7 @@ function play() {
 	hint.onclick = hintFunc;
 
 	geusses = [];
-	lives = Math.min(Math.ceil(unique_char(word) * (3 / 2)), 10); // No. of lives will be based on length of the word
+	lives = 3;
 	counter = 0;
 	space = 0;
 	result();
@@ -399,7 +330,6 @@ function play() {
 window.onload = function () {
 
 	window.count = 0;
-
 	play();
 
 	document.getElementById("level").onclick = function () {

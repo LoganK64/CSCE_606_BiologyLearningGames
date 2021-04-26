@@ -93,7 +93,7 @@ var buttons = function () {
 	//word insertion
 	console.log(words);
 	for(i = 0; i < words.length; i++){
-		console.log(insertedWords);
+	//	console.log(insertedWords);
 		switch(Math.floor(Math.random() * 3)){
 			case 0:
 				insertRight(words[i]);
@@ -244,9 +244,34 @@ result = function () {
 };
 
 setShowLives = function (str) {
+	console.log(str);
 	var showLives = document.getElementById("mylives");
 	showLives.innerHTML = str;
 };
+
+setShowWordBank = function()
+{
+	var showLives = document.getElementById("wordbank");
+	showLives.innerHTML = "Words to find: ";
+	
+
+	wblist = document.createElement("ul");
+
+	
+	for (var i = 0; i < insertedWords.length; i++) {
+			hold = document.createElement("li");
+			hold.id = "Word " + String(i);
+			hold.innerHTML = insertedWords[i];
+			
+			wblist.appendChild(hold);
+			
+			
+	}
+	
+	
+	wordbank.appendChild(wblist);
+	
+}
 
 
 
@@ -345,6 +370,7 @@ window.onload = function () {
 
 	window.count = 0;
 	play();
+	setShowWordBank();
 
 	document.getElementById("level").onclick = function () {
 		swal({
@@ -388,11 +414,13 @@ window.onload = function () {
 	// Reset
 	document.getElementById("reset").onclick = function () {
 		insertedWords=[];
+		
 		refreshLetter();
 		console.log(insertedWords.length);
 		correct.parentNode.removeChild(correct);
 		letters.parentNode.removeChild(letters);
 		
 		play();
+		setShowWordBank();
 	};
 };

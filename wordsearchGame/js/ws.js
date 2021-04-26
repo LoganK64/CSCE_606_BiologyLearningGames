@@ -58,6 +58,17 @@ function shuffle(array) {
 	}
 }
 
+var refreshLetter = function()
+{
+	for (var i = 0; i < Math.sqrt(fieldSize); i++) {		
+		
+		for(var j = 0; j < Math.sqrt(fieldSize); j++){
+			fieldArray[i][j].inWord = false;
+			fieldArray[i][j].word = "";
+		}
+		
+	}
+}
 // create alphabet ul
 var buttons = function () {
 	myButtons = document.getElementById("buttons");
@@ -80,7 +91,9 @@ var buttons = function () {
 		}
 	}
 	//word insertion
+	console.log(words);
 	for(i = 0; i < words.length; i++){
+		console.log(insertedWords);
 		switch(Math.floor(Math.random() * 3)){
 			case 0:
 				insertRight(words[i]);
@@ -109,6 +122,7 @@ function insertRight(word){
 	var row = 0;
 	var col = 0;
 	iter = 0;
+
 	//checking to see if it can place the word in random spots
 	while(taken == true && iter < 100){
 		row = Math.floor(Math.floor(Math.random() * fieldSize)/Math.sqrt(fieldSize));
@@ -347,35 +361,38 @@ window.onload = function () {
 			wordslist = Object.keys(words);
 			correct.parentNode.removeChild(correct);
 			letters.parentNode.removeChild(letters);
-			context.clearRect(0, 0, 400, 400);
+	
 			play();
-			swal.clickConfirm();
+			//swal.clickConfirm();
 		} //buttonEasy
 		document.getElementById("buttonMedium").onclick = function () {
 			words = window.mediumwords;
 			wordslist = Object.keys(words);
 			correct.parentNode.removeChild(correct);
 			letters.parentNode.removeChild(letters);
-			context.clearRect(0, 0, 400, 400);
+	
 			play();
-			swal.clickConfirm();
+			//swal.clickConfirm();
 		} //buttonMedium
 		document.getElementById("buttonHard").onclick = function () {
 			words = window.hardwords;
 			wordslist = Object.keys(words);
 			correct.parentNode.removeChild(correct);
 			letters.parentNode.removeChild(letters);
-			context.clearRect(0, 0, 400, 400);
+		
 			play();
-			swal.clickConfirm();
+			//swal.clickConfirm();
 		}
 	}
 
 	// Reset
 	document.getElementById("reset").onclick = function () {
+		insertedWords=[];
+		refreshLetter();
+		console.log(insertedWords.length);
 		correct.parentNode.removeChild(correct);
 		letters.parentNode.removeChild(letters);
-		context.clearRect(0, 0, 400, 400);
+		
 		play();
 	};
 };

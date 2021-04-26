@@ -1,30 +1,32 @@
-var words = window.words;
-var categories = window.categories;
+var words = window.words; //word dataset
+var categories = window.categories; //category dataset
 //var wordslist = Object.keys(words);
 
-var wordslist;
+var wordslist; //for bag of words
 var category1;
 var category2;
 var hintText;
 var draggedItem = null;
+var score = 0;
 
-// create alphabet ul
+// create bag of words ul
 var boxes = function () {
 	myWords = document.getElementById("buttons");
 	wordBoxes = document.createElement("ul");
-	wordBoxes.className += "words";
+	wordBoxes.className = "words";
 	wordBoxes.id = "bag";
+	myWords.appendChild(wordBoxes);
 
 	for (let i = 0; i < wordslist.length; i++) {
-		list = document.createElement("li");
-		list.className += "word";
-		list.draggable = true;
-		list.innerHTML = wordslist[i];
-		myWords.appendChild(wordBoxes);
-		wordBoxes.appendChild(list);
+		word = document.createElement("li");
+		word.className = "word";
+		word.draggable = true;
+		word.innerHTML = wordslist[i];
+		wordBoxes.appendChild(word);
 	}
 };
 
+// add drag and drop features on the words
 var setDrag = function() {
   const list_items = document.querySelectorAll(".word");
   const lists = document.querySelectorAll(".words");
@@ -83,9 +85,14 @@ var setCategories = function () {
   categoryName2.innerHTML = category2;
 };
 
+// get bag of words
 function setWordLists(cat1, cat2) {
   var array1 = Object.keys(words[cat1]);
   var array2 = Object.keys(words[cat2]);
+  shuffle(array1);
+  shuffle(array2);
+  array1 = array1.slice(array1.length*0.4);
+  array2 = array2.slice(array2.length*0.4)
   wordslist = array1.concat(array2);
   shuffle(wordslist);
 };
@@ -145,15 +152,29 @@ function answerFunc() {
 	  for (x of list_items) {
 		x.draggable = false;
 	  }
+	  score= score+1;
+	  var lblScore = document.getElementById('lblScore');
+	  lblScore.innerHTML = "Score: "+ score;
 	}
 	else {
       var wrong = "Wrong!"
 	  swal("", "<div style='font-size :24px;'>" + wrong + "</div>","error");
+	  if (score>0){
+	    score = score -1;
+	  }
+	  else{
+		score =0;
+	  }
+	  var lblScore = document.getElementById('lblScore');
+	  lblScore.innerHTML = "Score: "+ score;
 	}
   }
   else {
 	var warning = "Not all words are sorted!"
 	swal("", "<div style='font-size :24px;'>" + warning + "</div>","warning");
+	
+	var lblScore = document.getElementById('lblScore');
+	lblScore.innerHTML = "Score: "+ score;
   }
 }
 
@@ -171,6 +192,9 @@ function resetFunc() {
   document.getElementById("answer").disabled = false;
   document.getElementById("hint").disabled = false;
   play();
+  
+  var lblScore = document.getElementById('lblScore');
+  lblScore.innerHTML = "Score: "+ score;
 }
 
 function play() {

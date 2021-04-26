@@ -16,8 +16,8 @@ window.easywords = {
 "paramecium" : ["Unicellular", "Genus of unicellular ciliates, commonly studied as a representative of the ciliate group", "paramecium.jpg" ]
 }
 */
+//WORDS MUST BE NO MORE THAN 11 CHARACTERS
 window.easywords = [
-    "mitochondria",
     "nucleus",
     "plantcell",
     "animalcell",

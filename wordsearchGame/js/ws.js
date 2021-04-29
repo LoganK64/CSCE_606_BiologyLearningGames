@@ -45,12 +45,16 @@ var difficulty = "Medium";
 const fieldSize = 121;
 var fieldArray = [];
 var insertedWords = [];
+var selectedWord = "";
+var selectedLetters = [];
 
 class Letter {
 	constructor(letter, inWord, word) {
 		this.letter = letter;	//char
 		this.inWord = inWord;	//bool
 		this.word = word;		//string
+		this.selected = false;
+		this.letterid = "";
 	}
   }
 
@@ -77,7 +81,7 @@ var buttons = function () {
 	myButtons = document.getElementById("buttons");
 	letters = document.createElement("ul");
 	letters.id = "alphabet";
-	for (var i = 0; i < Math.sqrt(fieldSize); i++) {		
+	for (var i = 0; i < Math.sqrt(fieldSize); i++) {	
 		fieldArray.push([]);
 		for(var j = 0; j < Math.sqrt(fieldSize); j++){
 			tempChar = alphabet[Math.floor(Math.random() * 26)];
@@ -86,7 +90,9 @@ var buttons = function () {
 			
 			//insert into the html
 			list = document.createElement("li");
-			list.id = "letter" + String(i) + String(j);
+			list.id = String(i) + ',' + String(j);
+			list.setAttribute("onclick", "selector()");
+			//list.onclick = "selector()";
 			list.innerHTML = tempLetter.letter;
 			check();
 			myButtons.appendChild(letters);
@@ -94,7 +100,7 @@ var buttons = function () {
 		}
 	}
 	//word insertion
-	console.log(words);
+	//console.log(words);
 	for(i = 0; i < words.length; i++){
 	//	console.log(insertedWords);
 		switch(Math.floor(Math.random() * 3)){
@@ -143,7 +149,7 @@ function insertRight(word){
 					fieldArray[row][col+z].letter = word.substring(z, z+1);
 					fieldArray[row][col+z].inWord = true;
 					fieldArray[row][col+z].word = word;
-					tempvar = document.getElementById("letter" + String(row) + String(col+z));
+					tempvar = document.getElementById(String(row) + ',' + String(col+z));
 					tempvar.innerHTML = word.substring(z, z+1);
 				}
 				insertedWords.push(word);
@@ -176,7 +182,7 @@ function insertDown(word){
 					fieldArray[row+z][col].letter = word.substring(z, z+1);
 					fieldArray[row+z][col].inWord = true;
 					fieldArray[row+z][col].word = word;
-					tempvar = document.getElementById("letter" + String(row+z) + String(col));
+					tempvar = document.getElementById(String(row+z) + ',' + String(col));
 					tempvar.innerHTML = word.substring(z, z+1);
 				}
 				insertedWords.push(word);
@@ -209,7 +215,7 @@ function insertDiagonal(word){
 					fieldArray[row+z][col+z].letter = word.substring(z, z+1);
 					fieldArray[row+z][col+z].inWord = true;
 					fieldArray[row+z][col+z].word = word;
-					tempvar = document.getElementById("letter" + String(row+z) + String(col+z));
+					tempvar = document.getElementById(String(row+z) + ',' + String(col+z));
 					tempvar.innerHTML = word.substring(z, z+1);
 				}
 				insertedWords.push(word);
@@ -222,6 +228,27 @@ function insertDiagonal(word){
 // Select Catagory
 var selectCat = function () {
 	catagoryName.innerHTML = "Words Remaining : " + insertedWords.length;
+};
+
+verifyWord = function (){
+	//might need to redo this later, this is lazy way of checking
+	if(selectedWord.length == selectedLetters.length){
+		for(var z = 0; z < insertedWords.length; z++){
+			if(selectedWord == insertedWords[z]){
+				insertedWords.splice(z,1);
+				selectedLetters = [];
+				selectCat();
+				break;
+			}
+		}
+		if(insertedWords.length == 0){
+			swal("", "<div style='font-size :24px;'>" + "Congratulations, you found all the words!" + "</div>")
+		}else{
+			swal("", "<div style='font-size :24px;'>" + "Correct!" + "</div>")
+		}
+	}else{
+		swal("", "<div style='font-size :24px;'>" + "Incorrect, please try again." + "</div>")
+	}
 };
 
 // Create geusses ul
@@ -249,7 +276,7 @@ result = function () {
 };
 
 setShowLives = function (str) {
-	console.log(str);
+	//console.log(str);
 	var showLives = document.getElementById("mylives");
 	showLives.innerHTML = str;
 	
@@ -322,23 +349,75 @@ comments = function () {
 // OnClick Function
 check = function () {
 	list.onclick = function () {
+		id = this.id.split(',');
+		id_col = id[0];
+		id_row = id[1];
+		fieldArrayLetter = fieldArray[id_col][id_row];
+		//select values for word submission
+		if(!fieldArrayLetter.selected){
+			fieldArrayLetter.selected = true;
+			this.setAttribute("class", "active");
+			selectedWord = fieldArrayLetter.word;
+			selectedLetters.push(fieldArrayLetter.letter);
+		}else{
+			fieldArrayLetter.selected = false;
+			this.setAttribute("class", "notactive");
+			selectedWord = fieldArrayLetter.word;
+			//remove letter from selected letters
+			for(var z = 0; z < selectedLetters.length; z++){
+				if(fieldArrayLetter.letter == selectedLetters[z]){
+					selectedLetters.splice(z,1);
+					break;
+				}
+			}
+			//console.log("Unselected!!!");
+		}
+
 		var geuss = this.innerHTML;
-		this.setAttribute("class", "active");
-		this.onclick = null;
+		//console.log(this.id);
+		
+		//this.onclick = null;
+		//console.log(this.id);
+		var property = document.getElementById(this.id);
+		//console.log(property.id.split(','));
+		var temp = property.id.split(',');
+		var row = temp[0];
+		var col = temp[1];
+
+		
+
+		/*
+		if(fieldArray[row][col].selected){
+			fieldArray[row][col].selected = false;
+		}else{
+			fieldArray[row][col].selected = true;
+		}
+
+        if(fieldArray[row][col].selected) {
+            property.style.backgroundColor = "#fff";
+        }
+        else {
+            property.style.backgroundColor = "#c1d72e";
+        }
+		*/
+
+
+/*
 		for (var i = 0; i < word.length; i++) {
 			if (word[i] === geuss) {
 				geusses[i].innerHTML = geuss;
 				counter += 1;
 			}
 		}
+		
 		var j = word.indexOf(geuss);
 		if (j === -1) {
 			lives -= 1;
 			comments();
-			animate();
 		} else {
 			comments();
 		}
+		*/
 	};
 };
 

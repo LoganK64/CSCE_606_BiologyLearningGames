@@ -39,14 +39,6 @@ p {
   height: fit-content;
 }
 
-#category1 {
-  height: 300px;
-}
-
-#category2 {
-  height: 300px;
-}
-
 .words {
   border: #fff dashed 2px;
   margin: 15px;
@@ -133,6 +125,14 @@ button:hover {
 #answer {
   position: absolute;
   right: 10px;
+}
+
+#bottom {
+  height: fit-content;
+}
+
+.buttonRow {
+  height: 100px;
 }
 
 .container {

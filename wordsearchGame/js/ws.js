@@ -72,6 +72,8 @@ var refreshLetter = function()
 		for(var j = 0; j < Math.sqrt(fieldSize); j++){
 			fieldArray[i][j].inWord = false;
 			fieldArray[i][j].word = "";
+			fieldArray[i][j].letterid = "";
+			fieldArray[i][j].selected = false;
 		}
 		
 	}
@@ -247,7 +249,21 @@ verifyWord = function (){
 			swal("", "<div style='font-size :24px;'>" + "Correct!" + "</div>")
 		}
 	}else{
-		swal("", "<div style='font-size :24px;'>" + "Incorrect, please try again." + "</div>")
+
+		lives = lives-1;
+		setShowLives("You have " + lives + " lives ");
+		if(lives > 0)
+			swal("", "<div style='font-size :24px;'>" + "Incorrect, please try again." + "</div>")
+		else
+		{
+			swal("", "<div style='font-size :24px;'>" + "You are out of lives. Please play again!" + "</div>")
+			insertedWords=[];
+		refreshLetter();
+		
+		letters.parentNode.removeChild(letters);
+		play();
+		setShowWordBank();
+		}
 	}
 };
 
@@ -459,7 +475,13 @@ function play() {
 	hint.onclick = hintFunc;
 
 	geusses = [];
-	lives = 3;
+
+	if(difficulty == "Easy")
+	{
+		lives = 5;
+	}
+	else
+		lives = 3;
 	counter = 0;
 	space = 0;
 	result();

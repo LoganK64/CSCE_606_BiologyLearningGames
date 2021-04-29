@@ -1,7 +1,6 @@
 
 
 var words = window.easywords;
-var wordslist = Object.keys(words);
 var alphabet = [
 	"a",
 	"b",
@@ -30,24 +29,16 @@ var alphabet = [
 	"y",
 	"z"
 ];
-var chosenCategory; // Selected catagory
-var getHint; // Word getHint
 var word; // Selected word
-var guess; // Geuss
-var geusses = []; // Stored geusses
 var lives; // Lives
-var counter; // Count correct geusses
-var space; // Number of spaces in word '-'
-var hintText;
-var difficulty = "Medium";
-
-//new code
-const fieldSize = 121;
+var difficulty = "Easy";
+const fieldSize = 121; //Must be a square
 var fieldArray = [];
 var insertedWords = [];
 var selectedWord = "";
 var selectedLetters = [];
 
+//each letter on grid is of class Letter
 class Letter {
 	constructor(letter, inWord, word) {
 		this.letter = letter;	//char
@@ -56,29 +47,20 @@ class Letter {
 		this.selected = false;
 		this.letterid = "";
 	}
-  }
+};
 
-function shuffle(array) {
-	for (let i = array.length - 1; i > 0; i--) {
-		let j = Math.floor(Math.random() * (i + 1));
-		[array[i], array[j]] = [array[j], array[i]];
-	}
-}
-
-var refreshLetter = function()
+var reset = function()
 {
-	for (var i = 0; i < Math.sqrt(fieldSize); i++) {		
-		
-		for(var j = 0; j < Math.sqrt(fieldSize); j++){
-			fieldArray[i][j].inWord = false;
-			fieldArray[i][j].word = "";
-			fieldArray[i][j].letterid = "";
-			fieldArray[i][j].selected = false;
-		}
-		
-	}
-}
-// create alphabet ul
+	word = "";
+	lives = 3;
+	fieldArray = [];
+	insertedWords = [];
+	selectedWord = "";
+	selectedLetters = [];
+	letters.parentNode.removeChild(letters);
+};
+
+//create "buttons"
 var buttons = function () {
 	myButtons = document.getElementById("buttons");
 	letters = document.createElement("ul");
@@ -102,9 +84,7 @@ var buttons = function () {
 		}
 	}
 	//word insertion
-	//console.log(words);
 	for(i = 0; i < words.length; i++){
-	//	console.log(insertedWords);
 		switch(Math.floor(Math.random() * 3)){
 			case 0:
 				insertRight(words[i]);
@@ -121,11 +101,6 @@ var buttons = function () {
 		}
 	}
 };
-
-//for(var x = 0; x < 11; x++){
-	//
-//}
-
 
 //insert facing right
 function insertRight(word){
@@ -159,7 +134,7 @@ function insertRight(word){
 		}
 		iter++;
 	}
-}
+};
 
 //insert facing down
 function insertDown(word){
@@ -192,7 +167,7 @@ function insertDown(word){
 		}
 		iter++;
 	}
-}
+};
 
 //insert facing diagonal (top left to bottom right)
 function insertDiagonal(word){
@@ -225,13 +200,14 @@ function insertDiagonal(word){
 		}
 		iter++;
 	}
-}
+};
 
 // Select Catagory
-var selectCat = function () {
+var wordsRemaining = function () {
 	catagoryName.innerHTML = "Words Remaining : " + insertedWords.length;
 };
 
+//checks to see if word is valid entry on submit
 verifyWord = function (){
 	//might need to redo this later, this is lazy way of checking
 	if(selectedWord.length == selectedLetters.length){
@@ -239,7 +215,7 @@ verifyWord = function (){
 			if(selectedWord == insertedWords[z]){
 				insertedWords.splice(z,1);
 				selectedLetters = [];
-				selectCat();
+				wordsRemaining();
 				break;
 			}
 		}
@@ -257,42 +233,15 @@ verifyWord = function (){
 		else
 		{
 			swal("", "<div style='font-size :24px;'>" + "You are out of lives. Please play again!" + "</div>")
-			insertedWords=[];
-		refreshLetter();
-		
-		letters.parentNode.removeChild(letters);
+		reset();
 		play();
 		setShowWordBank();
 		}
 	}
 };
 
-// Create geusses ul
-result = function () {
-/*
-	wordHolder = document.getElementById("hold");
-	correct = document.createElement("ul");
-
-	for (var i = 0; i < word.length; i++) {
-		correct.setAttribute("id", "my-word");
-		guess = document.createElement("li");
-		guess.setAttribute("class", "guess");
-		if (word[i] === "-") {
-			guess.innerHTML = "-";
-			space = 1;
-		} else {
-			guess.innerHTML = "_";
-		}
-
-		geusses.push(guess);
-		wordHolder.appendChild(correct);
-		correct.appendChild(guess);
-	}
-	*/
-};
-
+//show lives remaining
 setShowLives = function (str) {
-	//console.log(str);
 	var showLives = document.getElementById("mylives");
 	showLives.innerHTML = str;
 	
@@ -303,63 +252,29 @@ setShowLives = function (str) {
 	
 };
 
+//show words to find
 setShowWordBank = function()
 {
 	var showLives = document.getElementById("wordbank");
 	showLives.innerHTML = "Words to find: ";
-	
-
 	wblist = document.createElement("ul");
-
 	if(difficulty != "Hard")
 	{
 		for (var i = 0; i < insertedWords.length; i++) {
-				hold = document.createElement("li");
-				hold.id = "Word " + String(i);
-				hold.innerHTML = insertedWords[i];
-				
-				wblist.appendChild(hold);
-				
-				
+			hold = document.createElement("li");
+			hold.id = "Word " + String(i);
+			hold.innerHTML = insertedWords[i];
+			wblist.appendChild(hold);
 		}
 	}
 	else
 	{
-			hold = document.createElement("li");
-			hold.id = "Sorry";
-			hold.innerHTML = "NO BANK AVAILABLE ON HARD";
-				
-			wblist.appendChild(hold);
+		hold = document.createElement("li");
+		hold.id = "Sorry";
+		hold.innerHTML = "NO BANK AVAILABLE ON HARD";
+		wblist.appendChild(hold);
 	}
-	
 	wordbank.appendChild(wblist);
-	
-}
-
-
-
-// Show lives
-comments = function () {
-	setShowLives("You have " + lives + " lives ");
-	/*
-	if (lives < 1) {
-		setShowLives("Game Over");
-		for (var i = letters.children.length - 1; i >= 0; i--) {
-			letters.children[i].onclick = null;
-			letters.children[i].setAttribute("class", "active");
-		}
-		hint.onclick = null;
-	}
-	if (counter + space === geusses.length) {
-		setShowLives("You Win!");
-		swal("", "<div style='font-size :24px;'>" + word.toUpperCase() + " : " + hintText + "</div>", "success");
-		for (var i = letters.children.length - 1; i >= 0; i--) {
-			letters.children[i].onclick = null;
-			letters.children[i].setAttribute("class", "active");
-		}
-		hint.onclick = null;
-	}
-	*/
 };
 
 // OnClick Function
@@ -386,111 +301,28 @@ check = function () {
 					break;
 				}
 			}
-			//console.log("Unselected!!!");
 		}
-
-		var geuss = this.innerHTML;
-		//console.log(this.id);
-		
-		//this.onclick = null;
-		//console.log(this.id);
 		var property = document.getElementById(this.id);
-		//console.log(property.id.split(','));
 		var temp = property.id.split(',');
 		var row = temp[0];
 		var col = temp[1];
-
-		
-
-		/*
-		if(fieldArray[row][col].selected){
-			fieldArray[row][col].selected = false;
-		}else{
-			fieldArray[row][col].selected = true;
-		}
-
-        if(fieldArray[row][col].selected) {
-            property.style.backgroundColor = "#fff";
-        }
-        else {
-            property.style.backgroundColor = "#c1d72e";
-        }
-		*/
-
-
-/*
-		for (var i = 0; i < word.length; i++) {
-			if (word[i] === geuss) {
-				geusses[i].innerHTML = geuss;
-				counter += 1;
-			}
-		}
-		
-		var j = word.indexOf(geuss);
-		if (j === -1) {
-			lives -= 1;
-			comments();
-		} else {
-			comments();
-		}
-		*/
 	};
 };
 
-// Hint
-function hintFunc() {
-	swal("", "<div style='font-size :24px;'>" + hintText + "</div>")
-};
-
-// Helper function for unique number of characters in a string
-function unique_char(str) {
-	var uniql = "";
-	for (var x = 0; x < str.length; x++) {
-		var char = str.charAt(x);
-		if ((/[a-zA-Z]/).test(char) == false) {
-			continue;
-		}
-		if (uniql.indexOf(char) == -1) {
-			uniql += str[x];
-		}
-	}
-	return uniql.length;
-}
-
-// Helper function for setting image source
-function setImageSource(str) {
-	var image = document.getElementById("imageguess");
-	image.src = str;
-}
-
 // Play
 function play() {
-
-	word = wordslist[count % wordslist.length];
-	hintText = words[wordslist[count % wordslist.length]][1];
-	//setImageSource("assets/" + words[wordslist[count % wordslist.length]][2]);
-
-	word = word.replace(/\s/g, "-");
 	buttons();
-	hint.onclick = hintFunc;
-
-	geusses = [];
-
 	if(difficulty == "Easy")
 	{
 		lives = 5;
 	}
 	else
 		lives = 3;
-	counter = 0;
-	space = 0;
-	result();
-	comments();
-	selectCat();
+	setShowLives("You have " + lives + " lives ");
+	wordsRemaining();
 };
 
 window.onload = function () {
-
 	window.count = 0;
 	play();
 	setShowWordBank();
@@ -506,43 +338,25 @@ window.onload = function () {
 			showConfirmButton: false
 		}) //swal
 		document.getElementById("buttonEasy").onclick = function () {
-
-		
-		insertedWords=[];
 			difficulty = "Easy";
-			refreshLetter();
-			//console.log(words);
-			
-			letters.parentNode.removeChild(letters);
-		
+			words = window.easywords;
+			reset();
 			play();
 			setShowWordBank();
 			swal.clickConfirm();
 		} //buttonEasy
 		document.getElementById("buttonMedium").onclick = function () {
-
-			insertedWords=[];
-		
-			refreshLetter();
 			difficulty = "Medium";
-			//console.log(words);
-			
-			letters.parentNode.removeChild(letters);
-		
+			words = window.mediumwords;
+			reset();
 			play();
 			setShowWordBank();
 			swal.clickConfirm();
 		} //buttonMedium
 		document.getElementById("buttonHard").onclick = function () {
-
-			insertedWords=[];
-		
-			refreshLetter();
 			difficulty = "Hard";
-			//console.log(words);
-			
-			letters.parentNode.removeChild(letters);
-		
+			words = window.hardwords;
+			reset();
 			play();
 			setShowWordBank();
 			swal.clickConfirm();
@@ -551,10 +365,7 @@ window.onload = function () {
 
 	// Reset
 	document.getElementById("reset").onclick = function () {
-		insertedWords=[];
-		refreshLetter();
-		
-		letters.parentNode.removeChild(letters);
+		reset();
 		play();
 		setShowWordBank();
 	};

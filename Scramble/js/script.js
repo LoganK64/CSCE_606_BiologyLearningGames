@@ -3,7 +3,7 @@ var level;
 var wordbank;
 var rndNum;
 var word;
-var originalHTML = document.getElementById("squares").innerHTML
+var originalHTML = document.getElementById("squares").innerHTML()
 var score = 0;
 var guessed = []
 
@@ -105,3 +105,7 @@ $('#board tr').sortable({
     } //tempword
   }//function check order
 }); //sortable
+
+module.exports = {
+  getRandomInt: getRandomInt
+}

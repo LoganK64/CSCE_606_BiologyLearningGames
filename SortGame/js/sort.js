@@ -1,30 +1,33 @@
-var words = window.words;
-var categories = window.categories;
+var words = window.words; //word dataset
+var categories = window.categories; //category dataset
 //var wordslist = Object.keys(words);
 
-var wordslist;
+var wordslist; //for bag of words
 var category1;
 var category2;
 var hintText;
 var draggedItem = null;
+var score = 0;
+var lives = 5;
 
-// create alphabet ul
+// create bag of words ul
 var boxes = function () {
 	myWords = document.getElementById("buttons");
 	wordBoxes = document.createElement("ul");
-	wordBoxes.className += "words";
+	wordBoxes.className = "words";
 	wordBoxes.id = "bag";
+	myWords.appendChild(wordBoxes);
 
 	for (let i = 0; i < wordslist.length; i++) {
-		list = document.createElement("li");
-		list.className += "word";
-		list.draggable = true;
-		list.innerHTML = wordslist[i];
-		myWords.appendChild(wordBoxes);
-		wordBoxes.appendChild(list);
+		word = document.createElement("li");
+		word.className = "word";
+		word.draggable = true;
+		word.innerHTML = wordslist[i];
+		wordBoxes.appendChild(word);
 	}
 };
 
+// add drag and drop features on the words
 var setDrag = function() {
   const list_items = document.querySelectorAll(".word");
   const lists = document.querySelectorAll(".words");
@@ -83,15 +86,28 @@ var setCategories = function () {
   categoryName2.innerHTML = category2;
 };
 
+// get bag of words
 function setWordLists(cat1, cat2) {
   var array1 = Object.keys(words[cat1]);
   var array2 = Object.keys(words[cat2]);
+  shuffle(array1);
+  shuffle(array2);
+  if (array1.length > 5) {
+	array1 = array1.slice(array1.length*0.4);
+  }
+  if (array2.length > 5) {
+	array2 = array2.slice(array2.length*0.4);
+  }
   wordslist = array1.concat(array2);
   shuffle(wordslist);
 };
 
 function hintFunc() {
-  var randWord = wordslist[Math.floor(Math.random() * wordslist.length)];
+  var list_items = document.getElementById("bag").getElementsByTagName("li");
+  if (list_items.length == 0) {
+	return false;
+  }
+  var randWord = list_items[Math.floor(Math.random() * list_items.length)].innerHTML;
   var cat;
   var h;
   var found = false;
@@ -112,6 +128,16 @@ function hintFunc() {
   hintText = "Category: " + cat + "\n" + "Hint: " + h;
   swal("", "<div style='font-size :24px;'>" + hintText + "</div>");
 };
+
+function disablePlay() {
+  document.getElementById("reset").style.visibility = "visible";
+  document.getElementById("answer").disabled = true;
+  document.getElementById("hint").disabled = true;
+  var list_items = document.querySelectorAll(".word");
+  for (x of list_items) {
+    x.draggable = false;
+  }
+}
 
 function answerFunc() {
   var cat1_list = document.getElementById("category1").getElementsByTagName("li");
@@ -137,18 +163,35 @@ function answerFunc() {
 	}
 	if (correct) {
 	  var success = "Correct!"
+	  disablePlay();
 	  swal("", "<div style='font-size :24px;'>" + success + "</div>","success");
-	  document.getElementById("reset").style.visibility = "visible";
-	  document.getElementById("answer").disabled = true;
-	  document.getElementById("hint").disabled = true;
-	  var list_items = document.querySelectorAll(".word");
-	  for (x of list_items) {
-		x.draggable = false;
-	  }
+	  score= score+100;
+	  var lblScore = document.getElementById('lblScore');
+	  lblScore.innerHTML = "Score: "+ score;
+	  var lblLife = document.getElementById('lblLife');
+	  lblLife.innerHTML = "Lives: "+ lives;
 	}
 	else {
       var wrong = "Wrong!"
-	  swal("", "<div style='font-size :24px;'>" + wrong + "</div>","error");
+	  if (score>0){
+	    score = score - 10;
+	  }
+	  else{
+		score =0;
+	  }
+	  if (lives > 0) {
+		lives = lives - 1;
+		swal("", "<div style='font-size :24px;'>" + wrong + "</div>","error");
+	  }
+	  else {
+		var msg = "Game Over!"
+		swal("", "<div style='font-size :24px;'>" + msg + "</div>", "error");
+		disablePlay();
+	  }
+	  var lblScore = document.getElementById('lblScore');
+	  lblScore.innerHTML = "Score: "+ score;
+	  var lblLife = document.getElementById('lblLife');
+	  lblLife.innerHTML = "Lives: " + lives;
 	}
   }
   else {
@@ -171,6 +214,15 @@ function resetFunc() {
   document.getElementById("answer").disabled = false;
   document.getElementById("hint").disabled = false;
   play();
+  
+  if (lives <= 0) {
+	score = 0;
+	lives = 5;
+	var lblScore = document.getElementById('lblScore');
+	lblScore.innerHTML = "Score: " + score;
+	var lblLife = document.getElementById('lblLife');
+	lblLife.innerHTML = "Lives: " + lives;
+  }
 }
 
 function play() {

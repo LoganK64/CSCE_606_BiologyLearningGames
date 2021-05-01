@@ -1,6 +1,6 @@
 /* IF LOST READ THIS
  * 
- * This File Enumerates Tests for the game
+ * This File Enumerates Tests for the Sort game
  */
  
   describe("sortGame", function(){
